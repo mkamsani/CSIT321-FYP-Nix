@@ -112,6 +112,7 @@
       chromium
       firefox
       # Markdown/PDF/Web Tools
+      goldendict-ng
       masterpdfeditor4
       mermaid-cli
       metadata-cleaner
@@ -174,6 +175,7 @@
   python3
   rustc
   # C/C++
+  cosmocc
   gnumake
   libgcc
   # Deployment
@@ -185,6 +187,7 @@
   ugrep
   # IDE & Text Editors
   helix
+  vscode-with-extensions
   # Windows Binaries
   bottles
   ];
