@@ -54,7 +54,13 @@
     gnome-tour
   ]) ++ (with pkgs.gnome; [
     cheese # webcam tool
+    gnome-clocks
+    simple-scan
+    gnome-calculator
     gnome-music
+    gnome-contacts
+    gnome-weather
+    gnome-maps
     gedit # text editor
     epiphany # web browser
     geary # email reader
@@ -114,6 +120,8 @@
       obs-studio
       # CLI Clipboard Tools
       wl-clipboard
+      # Rice
+      gnome.gnome-tweaks
     ];
   };
 
