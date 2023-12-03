@@ -135,6 +135,7 @@
           github.copilot
           github.copilot-chat
           github.vscode-pull-request-github
+          jnoortheen.nix-ide
           ms-python.python
           ms-python.vscode-pylance
           ms-vscode.cpptools
