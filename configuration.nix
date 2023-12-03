@@ -84,7 +84,7 @@ in
   };
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
+  # services.printing.enable = true;
 
   # Enable sound with pipewire.
   sound.enable = true;
@@ -106,7 +106,7 @@ in
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  home-manager.users.user = { pkgs, ... }: {
+  home-manager.users.user = { config, pkgs, ... }: {
     home.packages = [ pkgs.atool pkgs.httpie ];
     programs.bash.enable = true;
     # The state version is required and should stay at the version you
@@ -148,20 +148,22 @@ in
         ln="ln -v";
         chmod="chmod -c";
         chown="chown -c";
-        update = "sudo nixos-rebuild switch";
+        update="sudo nixos-rebuild switch";
       };
     };
+    # -------------------------------------------------------------------------
 
     programs.gnome-terminal = {
       enable = true;
       showMenubar = false;
       profile = {
-        "5ddfe964-7ee6-4131-b449-26bdd97518f7" = {
+        "00000000-0000-0000-0000-000000000000" = {
           default = true;
-          visibleName = "Home Manager Custom";
+          visibleName = "Home Manager";
           cursorShape = "block";
           font = "MesloLGS Nerd Font 11"; # https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k
           showScrollbar = false;
+          transparencyPercent = 20;
           colors = {
             backgroundColor = "#000000";
             foregroundColor = "#ffffff";
@@ -187,100 +189,98 @@ in
         };
       };
     };
+    # -------------------------------------------------------------------------
 
     programs.helix = {
-    enable = true;
-    settings = {
-      theme = "dark_plus";
-      keys.normal = {
-        "{" = "goto_prev_paragraph";
-        "}" = "goto_next_paragraph";
-        "X" = "extend_line_above";
-        "esc" = ["collapse_selection" "keep_primary_selection"];
-        space.space = "file_picker";
-        space.w = ":w";
-        space.q = ":bc";
-        "C-q" = ":xa";
-        space.u = {
-          f = ":format"; # format using LSP formatter
-          w = ":set whitespace.render all";
-          W = ":set whitespace.render none";
-        };
-      };
-      keys.select = {
-        "%" = "match_brackets";
-      };
-      editor = {
-        color-modes = true;
-        cursorline = true;
-        mouse = false;
-        idle-timeout = 1;
-        line-number = "relative";
-        scrolloff = 5;
-        rulers = [80];
-        soft-wrap.enable = true;
-        indent-guides = {
-          render = true;
-        };
-        lsp = {
-          display-messages = true;
-          display-inlay-hints = true;
-        };
-        gutters = ["diagnostics" "line-numbers" "spacer" "diff"];
-        statusline = {
-          # mode-separator = "";
-          # separator = "";
-          left = ["mode" "selections" "spinner" "file-name" "total-line-numbers"];
-          center = [];
-          right = ["diagnostics" "file-encoding" "file-line-ending" "file-type" "position-percentage" "position"];
-          mode = {
-            normal = "NORMAL";
-            insert = "INSERT";
-            select = "SELECT";
+      enable = true;
+      defaultEditor = true;
+      settings = {
+        theme = "dark_plus";
+        keys.normal = {
+          "{" = "goto_prev_paragraph";
+          "}" = "goto_next_paragraph";
+          "X" = "extend_line_above";
+          "esc" = ["collapse_selection" "keep_primary_selection"];
+          space.space = "file_picker";
+          space.u = {
+            f = ":format"; # format using LSP formatter
+            w = ":set whitespace.render all";
+            W = ":set whitespace.render none";
           };
         };
-        whitespace.characters = {
-          space = "·";
-          nbsp = "⍽";
-          tab = "→";
-          newline = "⤶";
+        keys.select = {
+          "%" = "match_brackets";
         };
-        cursor-shape = {
-          insert = "bar";
-          normal = "block";
-          select = "block";
+        editor = {
+          color-modes = true;
+          cursorline = true;
+          mouse = false;
+          idle-timeout = 1;
+          line-number = "relative";
+          scrolloff = 5;
+          rulers = [80];
+          soft-wrap.enable = true;
+          indent-guides = {
+            render = true;
+          };
+          lsp = {
+            display-messages = true;
+            display-inlay-hints = true;
+          };
+          gutters = ["diagnostics" "line-numbers" "spacer" "diff"];
+          statusline = {
+            # mode-separator = "";
+            # separator = "";
+            left = ["mode" "selections" "spinner" "file-name" "total-line-numbers"];
+            center = [];
+            right = ["diagnostics" "file-encoding" "file-line-ending" "file-type" "position-percentage" "position"];
+            mode = {
+              normal = "NORMAL";
+              insert = "INSERT";
+              select = "SELECT";
+            };
+          };
+          whitespace.characters = {
+            space = "·";
+            nbsp = "⍽";
+            tab = "→";
+            newline = "⤶";
+          };
+          cursor-shape = {
+            insert = "bar";
+            normal = "block";
+            select = "block";
+          };
+        };
+      };
+      languages = {
+        language = [
+          {
+            name = "bash";
+            auto-format = true;
+            formatter = {
+              command = "${pkgs.shfmt}/bin/shfmt";
+              args = ["-i" "2" "-"];
+            };
+          }
+          {
+            name = "html";
+            file-types = ["html"];
+          }
+        ];
+        language-server = {
+          bash-language-server = {
+            command = "${pkgs.nodePackages.bash-language-server}/bin/bash-language-server";
+            args = ["start"];
+          };
+          vscode-css-language-server = {
+            command = "${pkgs.nodePackages.vscode-css-languageserver-bin}/bin/css-languageserver";
+            args = ["--stdio"];
+          };
         };
       };
     };
-
-    languages = {
-      language = [
-        {
-          name = "bash";
-          auto-format = true;
-          formatter = {
-            command = "${pkgs.shfmt}/bin/shfmt";
-            args = ["-i" "2" "-"];
-          };
-        }
-        {
-          name = "html";
-          file-types = ["html"];
-        }
-      ];
-      language-server = {
-        bash-language-server = {
-          command = "${pkgs.nodePackages.bash-language-server}/bin/bash-language-server";
-          args = ["start"];
-        };
-        vscode-css-language-server = {
-          command = "${pkgs.nodePackages.vscode-css-languageserver-bin}/bin/css-languageserver";
-          args = ["--stdio"];
-        };
-      };
-    };
-  };
-
+    # -------------------------------------------------------------------------
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -302,6 +302,8 @@ in
       obs-studio
       # CLI Clipboard Tools
       wl-clipboard
+      # VCS
+      git
       # Rice
       gnome.gnome-tweaks
       nerdfonts
@@ -347,14 +349,13 @@ in
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
+  nixpkgs.config.allowUnfreePredicate = (_: true);
+  environment.sessionVariables.NIXPKGS_ALLOW_UNFREE= "1";
   # VM services for clipboard sharing.
   services.spice-vdagentd.enable = true;
   services.qemuGuest.enable = true;
   virtualisation.virtualbox.guest.enable = true;
-  # virtualisation.virtualbox.host.enable = true;
-  # nixpkgs.config.virtualbox.host.enableExtensionPack = true;
-
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
   # Docker
   virtualisation.docker.enable = true;
   virtualisation.docker.rootless = {
@@ -364,20 +365,19 @@ in
   users.extraGroups.docker.members = [ "user" ];
 
   # Enable shared folder.
+  # virtualisation.virtualbox.host.enable = true;
+  # nixpkgs.config.virtualbox.host.enableExtensionPack = true;
   # fileSystems."/virtualboxshare" = {
   #   fsType = "vboxsf";
   #   device = "vboxsf";
   #   options = [ "rw" "nofail" ];
   # };
   
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
-  
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     # Core
     wget
-    git
     hyperledger-fabric
     # Virtual Machine Support
     spice-vdagent
@@ -402,16 +402,11 @@ in
     # Windows Binaries
     bottles
     # LSP
-    clang-tools
-    nil
-    luajitPackages.lua-lsp
-    typst-lsp
     nodePackages.bash-language-server
     nodePackages.vscode-css-languageserver-bin
     nodePackages.vscode-langservers-extracted
     nodePackages.prettier
     black
-    alejandra
     shellcheck
     shfmt
   ];
@@ -445,5 +440,4 @@ in
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
-
 }

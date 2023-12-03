@@ -25,6 +25,15 @@ sudo nixos-rebuild switch
 
 NixOS will fetch the required packages,
 and build the system based on the configuration file.
+
+You might see the following output during the build:
+
+> `trace: warning: optionsDocBook is deprecated since 23.11 and will be removed in 24.05`
+
+This is not caused by the configuration, the warning will disappear in a future update:
+
+https://discourse.nixos.org/t/warning-optionsdocbook-is-deprecated-since-23-11-and-will-be-removed-in-24-05/31353/2
+
 <br>
 
 Reboot the system, open the terminal again:
