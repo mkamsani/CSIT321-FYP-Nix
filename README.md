@@ -11,8 +11,10 @@ sudo cp configuration.nix configuration.nix.bak
 sudo curl $url
 ```
 
-You should see the output of a configuration file. \
-Download the file into /etc/nixos directory. \
+You should see the output of a configuration file.
+<br />
+
+Next, we download the file into /etc/nixos directory.
 In the same terminal:
 
 ```sh
@@ -23,6 +25,7 @@ sudo nixos-rebuild switch
 
 NixOS will fetch the required packages, \
 and build the system based on the configuration file.
+<br/>
 
 Reboot the system, open the terminal again:
 
