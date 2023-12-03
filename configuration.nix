@@ -111,6 +111,22 @@ in
     # The state version is required and should stay at the version you
     # originally installed.
     home.stateVersion = "23.11";
+     programs.zsh = {
+      enable = true;
+      shellAliases = {
+        ls="ls -AF --color=auto";
+        recent="ls -ltch";
+        grep="grep --color=auto";
+        cp="cp -iv";
+        mv="mv -iv";
+        rm="rm -iv";
+        rmdir="rmdir -v";
+        ln="ln -v";
+        chmod="chmod -c";
+        chown="chown -c";
+        update = "sudo nixos-rebuild switch";
+      };
+    };
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -156,25 +172,10 @@ in
           jebbs.plantuml
         ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
           {
-            name = "remote-ssh";
-            publisher = "ms-vscode-remote";
-            version = "0.108.2023112915";
-          }
-          {
-            name = "remote-ssh-edit";
-            publisher = "ms-vscode-remote";
-            version = "0.86.0";
-            sha256= "JsbaoIekUo2nKCu+fNbGlh5d1Tt/QJGUuXUGP04TsDI";
-          }
-          {
             name = "hyperledger-fabric-debugger";
             publisher = "spydra";
             version = "0.1.3";
-          }
-          {
-            name = "composer-support-client";
-            publisher = "hyperledgercomposer";
-            version = "0.19.12";
+            sha256 = "8da29f5cbdbe0463d7fa06f116a7508f7fbf8d113c446b27a2a60373af607582";
           }
         ];
       })
