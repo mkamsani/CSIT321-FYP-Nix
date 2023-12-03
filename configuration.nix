@@ -3,13 +3,16 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-
+let
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz";
+in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      (import "${home-manager}/nixos")
     ];
-
+  
   # Bootloader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/vda";
@@ -102,6 +105,14 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  home-manager.users.user = { pkgs, ... }: {
+    home.packages = [ pkgs.atool pkgs.httpie ];
+    programs.bash.enable = true;
+    # The state version is required and should stay at the version you
+    # originally installed.
+    home.stateVersion = "23.11";
+  };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.user = {
     isNormalUser = true;
@@ -126,22 +137,45 @@
       # IDE
       (vscode-with-extensions.override {
         vscodeExtensions = with vscode-extensions; [
-          astro-build.astro-vscode
-          bierner.markdown-mermaid
-          dbaeumer.vscode-eslint
-          donjayamanne.githistory
           editorconfig.editorconfig
-          esbenp.prettier-vscode
+          donjayamanne.githistory
           github.copilot
           github.copilot-chat
           github.vscode-pull-request-github
           jnoortheen.nix-ide
+          redhat.vscode-yaml
+          bierner.markdown-mermaid
+          esbenp.prettier-vscode
+          dbaeumer.vscode-eslint
           ms-python.python
           ms-python.vscode-pylance
           ms-vscode.cpptools
           ms-vscode.makefile-tools
-          redhat.vscode-yaml
           vscode-icons-team.vscode-icons
+          astro-build.astro-vscode
+          jebbs.plantuml
+        ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+          {
+            name = "remote-ssh";
+            publisher = "ms-vscode-remote";
+            version = "0.108.2023112915";
+          }
+          {
+            name = "remote-ssh-edit";
+            publisher = "ms-vscode-remote";
+            version = "0.86.0";
+            sha256= "JsbaoIekUo2nKCu+fNbGlh5d1Tt/QJGUuXUGP04TsDI";
+          }
+          {
+            name = "hyperledger-fabric-debugger";
+            publisher = "spydra";
+            version = "0.1.3";
+          }
+          {
+            name = "composer-support-client";
+            publisher = "hyperledgercomposer";
+            version = "0.19.12";
+          }
         ];
       })
     ];
@@ -188,6 +222,7 @@
     # Core
     wget
     git
+    hyperledger-fabric
     # Virtual Machine Support
     spice-vdagent
     linuxKernel.packages.linux_zen.virtualboxGuestAdditions
