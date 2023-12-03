@@ -159,6 +159,8 @@
   #   options = [ "rw" "nofail" ];
   # };
   
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  
     
 
   # List packages installed in system profile. To search, run:
@@ -191,21 +193,21 @@
   helix
   (vscode-with-extensions.override {
     vscodeExtensions = with vscode-extensions; [
-        vscode-extensions.astro-build.astro-vscode
-        vscode-extensions.bierner.markdown-mermaid
-        vscode-extensions.dbaeumer.vscode-eslint
-        vscode-extensions.donjayamanne.githistory
-        vscode-extensions.editorconfig.editorconfig
-        vscode-extensions.esbenp.prettier-vscode
-        vscode-extensions.github.copilot
-        vscode-extensions.github.copilot-chat
-        vscode-extensions.github.vscode-pull-request-github
-        vscode-extensions.ms-python.python
-        vscode-extensions.ms-python.vscode-pylance
-        vscode-extensions.ms-vscode.cpptools
-        vscode-extensions.ms-vscode.makefile-tools
-        vscode-extensions.redhat.vscode-yaml
-        vscode-extensions.vscode-icons-team.vscode-icons
+        astro-build.astro-vscode
+        bierner.markdown-mermaid
+        dbaeumer.vscode-eslint
+        donjayamanne.githistory
+        editorconfig.editorconfig
+        esbenp.prettier-vscode
+        github.copilot
+        github.copilot-chat
+        github.vscode-pull-request-github
+        ms-python.python
+        ms-python.vscode-pylance
+        ms-vscode.cpptools
+        ms-vscode.makefile-tools
+        redhat.vscode-yaml
+        vscode-icons-team.vscode-icons
     ];
   })
   # Windows Binaries
