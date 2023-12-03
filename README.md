@@ -5,10 +5,10 @@ This setup is for the LiveCD GNOME installation.
 Open the terminal with Console and enter the following:
 
 ```sh
-url='https://raw.githubusercontent.com/mkamsani/CSIT321-FYP-Nix/main/configuration.nix'
+github='https://raw.githubusercontent.com/mkamsani/CSIT321-FYP-Nix/main/'
 cd /etc/nixos
 sudo cp configuration.nix configuration.nix.bak
-sudo curl $url
+sudo curl $github/configuration.nix
 ```
 
 You should see the output of a configuration file.
@@ -19,7 +19,8 @@ In the same terminal:
 
 ```sh
 sudo rm -f configuration.nix
-sudo curl -o configuration.nix $url
+sudo curl -o $HOME/.p10k.zsh $github/.p10k.zsh
+sudo curl -o configuration.nix $github/configuration.nix
 sudo nixos-rebuild switch
 ```
 
@@ -47,3 +48,4 @@ This removes unused packages from the system.
 
 To add/remove packages or modify your configuration,
 edit the `/etc/nixos/configuration.nix` file.
+

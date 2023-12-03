@@ -106,18 +106,31 @@ in
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
   home-manager.users.user = { config, pkgs, ... }: {
+    home.stateVersion = "23.11"; # The state version is required and should stay at the version you originally installed.
     home.packages = [ pkgs.atool pkgs.httpie ];
+    home.shellAliases = {
+      ls="ls -AF --color=auto";
+      recent="ls -ltch";
+      grep="grep --color=auto";
+      cp="cp -iv";
+      mv="mv -iv";
+      rm="rm -iv";
+      rmdir="rmdir -v";
+      ln="ln -v";
+      chmod="chmod -c";
+      chown="chown -c";
+      update="sudo nixos-rebuild switch";
+    };
+    
     programs.bash.enable = true;
-    # The state version is required and should stay at the version you
-    # originally installed.
-    home.stateVersion = "23.11";
-
     programs.zsh = {
-      historySubstringSearch.enable = true;
       enable = true;
       enableCompletion = true;
       enableVteIntegration = true;
+      historySubstringSearch.enable = true;
       # enableAutosuggestions = true; # Based on history.
       # syntaxHighlighting.enable = true; # Can highlight syntax errors.
       oh-my-zsh = {
@@ -133,24 +146,26 @@ in
         }
         {
           name = "powerlevel10k-config";
-          src = pkgs.zsh-powerlevel10k;
-          file = "share/zsh-powerlevel10k/config/p10k-lean.zsh";
+          src = /home/user;
+          file = ".p10k.zsh";
         }
       ];
-      shellAliases = {
-        ls="ls -AF --color=auto";
-        recent="ls -ltch";
-        grep="grep --color=auto";
-        cp="cp -iv";
-        mv="mv -iv";
-        rm="rm -iv";
-        rmdir="rmdir -v";
-        ln="ln -v";
-        chmod="chmod -c";
-        chown="chown -c";
-        update="sudo nixos-rebuild switch";
+    };
+
+    programs.git.enable = true;
+    programs.git.extraConfig = {
+      core.editor = "hx";
+      log.decorate = "full";
+      pull.rebase = true;
+      rebase.autostash = true;
+      stash.showPatch = true;
+      "color \"status\"" = {
+        added = "178";
+        changed = "178";
+        untracked = "39";
       };
     };
+
     # -------------------------------------------------------------------------
 
     programs.gnome-terminal = {
@@ -302,8 +317,6 @@ in
       obs-studio
       # CLI Clipboard Tools
       wl-clipboard
-      # VCS
-      git
       # Rice
       gnome.gnome-tweaks
       nerdfonts
