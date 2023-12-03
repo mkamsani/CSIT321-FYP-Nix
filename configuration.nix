@@ -53,6 +53,7 @@ in
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
   environment.gnome.excludePackages = (with pkgs; [
+    gnome-console # terminal
     gnome-photos
     gnome-tour
   ]) ++ (with pkgs.gnome; [
@@ -111,8 +112,31 @@ in
     # The state version is required and should stay at the version you
     # originally installed.
     home.stateVersion = "23.11";
-     programs.zsh = {
+
+    programs.zsh = {
+      historySubstringSearch.enable = true;
       enable = true;
+      enableCompletion = true;
+      enableVteIntegration = true;
+      # enableAutosuggestions = true; # Based on history.
+      # syntaxHighlighting.enable = true; # Can highlight syntax errors.
+      oh-my-zsh = {
+        enable = true;
+        plugins = [ "git" ];
+        theme = "dst";
+      };
+      plugins = [
+        {
+          name = "powerlevel10k";
+          src = pkgs.zsh-powerlevel10k;
+          file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+        }
+        {
+          name = "powerlevel10k-config";
+          src = pkgs.zsh-powerlevel10k;
+          file = "share/zsh-powerlevel10k/config/p10k-lean.zsh";
+        }
+      ];
       shellAliases = {
         ls="ls -AF --color=auto";
         recent="ls -ltch";
@@ -127,6 +151,136 @@ in
         update = "sudo nixos-rebuild switch";
       };
     };
+
+    programs.gnome-terminal = {
+      enable = true;
+      showMenubar = false;
+      profile = {
+        "5ddfe964-7ee6-4131-b449-26bdd97518f7" = {
+          default = true;
+          visibleName = "Home Manager Custom";
+          cursorShape = "block";
+          font = "MesloLGS Nerd Font 11"; # https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k
+          showScrollbar = false;
+          colors = {
+            backgroundColor = "#000000";
+            foregroundColor = "#ffffff";
+            palette = [
+              "#000000"
+              "#aa0000"
+              "#00aa00"
+              "#aa5500"
+              "#0000aa"
+              "#aa00aa"
+              "#00aaaa"
+              "#aaaaaa"
+              "#555555"
+              "#ff5555"
+              "#55ff55"
+              "#ffff55"
+              "#5555ff"
+              "#ff55ff"
+              "#55ffff"
+              "#ffffff"
+            ];
+          };
+        };
+      };
+    };
+
+    programs.helix = {
+    enable = true;
+    settings = {
+      theme = "dark_plus";
+      keys.normal = {
+        "{" = "goto_prev_paragraph";
+        "}" = "goto_next_paragraph";
+        "X" = "extend_line_above";
+        "esc" = ["collapse_selection" "keep_primary_selection"];
+        space.space = "file_picker";
+        space.w = ":w";
+        space.q = ":bc";
+        "C-q" = ":xa";
+        space.u = {
+          f = ":format"; # format using LSP formatter
+          w = ":set whitespace.render all";
+          W = ":set whitespace.render none";
+        };
+      };
+      keys.select = {
+        "%" = "match_brackets";
+      };
+      editor = {
+        color-modes = true;
+        cursorline = true;
+        mouse = false;
+        idle-timeout = 1;
+        line-number = "relative";
+        scrolloff = 5;
+        rulers = [80];
+        soft-wrap.enable = true;
+        indent-guides = {
+          render = true;
+        };
+        lsp = {
+          display-messages = true;
+          display-inlay-hints = true;
+        };
+        gutters = ["diagnostics" "line-numbers" "spacer" "diff"];
+        statusline = {
+          # mode-separator = "";
+          # separator = "";
+          left = ["mode" "selections" "spinner" "file-name" "total-line-numbers"];
+          center = [];
+          right = ["diagnostics" "file-encoding" "file-line-ending" "file-type" "position-percentage" "position"];
+          mode = {
+            normal = "NORMAL";
+            insert = "INSERT";
+            select = "SELECT";
+          };
+        };
+        whitespace.characters = {
+          space = "·";
+          nbsp = "⍽";
+          tab = "→";
+          newline = "⤶";
+        };
+        cursor-shape = {
+          insert = "bar";
+          normal = "block";
+          select = "block";
+        };
+      };
+    };
+
+    languages = {
+      language = [
+        {
+          name = "bash";
+          auto-format = true;
+          formatter = {
+            command = "${pkgs.shfmt}/bin/shfmt";
+            args = ["-i" "2" "-"];
+          };
+        }
+        {
+          name = "html";
+          file-types = ["html"];
+        }
+      ];
+      language-server = {
+        bash-language-server = {
+          command = "${pkgs.nodePackages.bash-language-server}/bin/bash-language-server";
+          args = ["start"];
+        };
+        vscode-css-language-server = {
+          command = "${pkgs.nodePackages.vscode-css-languageserver-bin}/bin/css-languageserver";
+          args = ["--stdio"];
+        };
+      };
+    };
+  };
+
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -150,6 +304,7 @@ in
       wl-clipboard
       # Rice
       gnome.gnome-tweaks
+      nerdfonts
       # IDE
       (vscode-with-extensions.override {
         vscodeExtensions = with vscode-extensions; [
@@ -244,10 +399,21 @@ in
     fzf
     jq
     ugrep
-    # IDE & Text Editors
-    helix
     # Windows Binaries
     bottles
+    # LSP
+    clang-tools
+    nil
+    luajitPackages.lua-lsp
+    typst-lsp
+    nodePackages.bash-language-server
+    nodePackages.vscode-css-languageserver-bin
+    nodePackages.vscode-langservers-extracted
+    nodePackages.prettier
+    black
+    alejandra
+    shellcheck
+    shfmt
   ];
 
   # Enable experimental features.
