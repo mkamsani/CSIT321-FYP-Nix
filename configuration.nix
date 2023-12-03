@@ -85,8 +85,18 @@
     description = "FYP-23-S4-10";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
+      # Web Browsers
+      chromium
       firefox
-    #  thunderbird
+      # Markdown/PDF/Web Tools
+      masterpdfeditor4
+      mermaid-cli
+      metadata-cleaner
+      pandoc
+      # Video Tools
+      obs-studio
+      # CLI Clipboard Tools
+      wl-clipboard
     ];
   };
 
@@ -101,11 +111,38 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  # VM services for clipboard sharing.
+  services.spice-vdagentd.enable = true;
+  services.qemuGuest.enable = true;
+  virtualisation.virtualbox.guest.enable = true;
+  # virtualisation.virtualbox.host.enable = true;
+  # nixpkgs.config.virtualbox.host.enableExtensionPack = true;
+
+  # Enable shared folder.
+  # fileSystems."/virtualboxshare" = {
+  #   fsType = "vboxsf";
+  #   device = "vboxsf";
+  #   options = [ "rw" "nofail" ];
+  # };
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+  # Core
+  wget
+  git
+  # Virtual Machine Support
+  spice-vdagent
+  linuxKernel.packages.linux_zen.virtualboxGuestAdditions
+  # Languages
+  go
+  nodejs_20
+  python3
+  rustc
+  # IDE & Text Editors
+  helix
+  # Windows Binaries
+  bottles
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
