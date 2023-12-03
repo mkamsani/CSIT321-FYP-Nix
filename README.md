@@ -27,7 +27,7 @@ and build the system based on the configuration file.
 Reboot the system, open the terminal again:
 
 ```sh
-sudo nix collect-garbage --delete-old
+sudo nix-collect-garbage --delete-old
 ```
 
 This removes unused packages from the system.
