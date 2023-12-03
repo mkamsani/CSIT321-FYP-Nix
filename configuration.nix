@@ -53,24 +53,24 @@
     gnome-photos
     gnome-tour
   ]) ++ (with pkgs.gnome; [
-    cheese # webcam tool
-    gnome-clocks
-    simple-scan
-    gnome-calculator
-    gnome-music
-    gnome-contacts
-    gnome-weather
-    gnome-maps
-    gedit # text editor
-    epiphany # web browser
-    geary # email reader
-    evince # document viewer
-    gnome-characters
-    totem # video player
-    tali # poker game
-    iagno # go game
-    hitori # sudoku game
     atomix # puzzle game
+    cheese # webcam tool
+    epiphany # web browser
+    evince # document viewer
+    geary # email reader
+    gedit # text editor
+    gnome-calculator
+    gnome-characters
+    gnome-clocks
+    gnome-contacts
+    gnome-maps
+    gnome-music
+    gnome-weather
+    hitori # sudoku game
+    iagno # go game
+    simple-scan
+    tali # poker game
+    totem # video player
   ]);
 
   # Configure keymap in X11
