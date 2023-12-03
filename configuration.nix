@@ -143,6 +143,14 @@
   # virtualisation.virtualbox.host.enable = true;
   # nixpkgs.config.virtualbox.host.enableExtensionPack = true;
 
+  # Docker
+  virtualisation.docker.enable = true;
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
+  users.extraGroups.docker.members = [ "user" ];
+
   # Enable shared folder.
   # fileSystems."/virtualboxshare" = {
   #   fsType = "vboxsf";
@@ -161,14 +169,28 @@
   linuxKernel.packages.linux_zen.virtualboxGuestAdditions
   # Languages
   go
+  jdk21
   nodejs_20
   python3
   rustc
+  # C/C++
+  gnumake
+  libgcc
+  # Deployment
+  docker
+  docker-compose
+  # CLI Tools
+  fzf
+  jq
+  ugrep
   # IDE & Text Editors
   helix
   # Windows Binaries
   bottles
   ];
+
+  # Enable experimental features.
+  nix.settings.experimental-features = "nix-command flakes";
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
