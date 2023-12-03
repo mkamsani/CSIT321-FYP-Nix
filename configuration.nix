@@ -123,6 +123,26 @@
       wl-clipboard
       # Rice
       gnome.gnome-tweaks
+      # IDE
+      (vscode-with-extensions.override {
+        vscodeExtensions = with vscode-extensions; [
+          astro-build.astro-vscode
+          bierner.markdown-mermaid
+          dbaeumer.vscode-eslint
+          donjayamanne.githistory
+          editorconfig.editorconfig
+          esbenp.prettier-vscode
+          github.copilot
+          github.copilot-chat
+          github.vscode-pull-request-github
+          ms-python.python
+          ms-python.vscode-pylance
+          ms-vscode.cpptools
+          ms-vscode.makefile-tools
+          redhat.vscode-yaml
+          vscode-icons-team.vscode-icons
+        ];
+      })
     ];
   };
 
@@ -161,57 +181,36 @@
   
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   
-    
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  # Core
-  wget
-  git
-  # Virtual Machine Support
-  spice-vdagent
-  linuxKernel.packages.linux_zen.virtualboxGuestAdditions
-  # Languages
-  go
-  jdk21
-  nodejs_20
-  python3
-  rustc
-  # C/C++
-  cosmocc
-  gnumake
-  libgcc
-  # Deployment
-  docker
-  docker-compose
-  # CLI Tools
-  fzf
-  jq
-  ugrep
-  # IDE & Text Editors
-  helix
-  (vscode-with-extensions.override {
-    vscodeExtensions = with vscode-extensions; [
-        astro-build.astro-vscode
-        bierner.markdown-mermaid
-        dbaeumer.vscode-eslint
-        donjayamanne.githistory
-        editorconfig.editorconfig
-        esbenp.prettier-vscode
-        github.copilot
-        github.copilot-chat
-        github.vscode-pull-request-github
-        ms-python.python
-        ms-python.vscode-pylance
-        ms-vscode.cpptools
-        ms-vscode.makefile-tools
-        redhat.vscode-yaml
-        vscode-icons-team.vscode-icons
-    ];
-  })
-  # Windows Binaries
-  bottles
+    # Core
+    wget
+    git
+    # Virtual Machine Support
+    spice-vdagent
+    linuxKernel.packages.linux_zen.virtualboxGuestAdditions
+    # Languages
+    go
+    jdk21
+    nodejs_20
+    python3
+    rustc
+    # C/C++
+    cosmocc
+    gnumake
+    libgcc
+    # Deployment
+    docker
+    docker-compose
+    # CLI Tools
+    fzf
+    jq
+    ugrep
+    # IDE & Text Editors
+    helix
+    # Windows Binaries
+    bottles
   ];
 
   # Enable experimental features.
