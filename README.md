@@ -12,7 +12,7 @@ sudo curl $url
 ```
 
 You should see the output of a configuration file.
-<br />
+<br>
 
 Next, we download the file into /etc/nixos directory.
 In the same terminal:
@@ -23,9 +23,9 @@ sudo curl -o configuration.nix $url
 sudo nixos-rebuild switch
 ```
 
-NixOS will fetch the required packages, \
+NixOS will fetch the required packages,
 and build the system based on the configuration file.
-<br/>
+<br>
 
 Reboot the system, open the terminal again:
 
@@ -34,3 +34,7 @@ sudo nix-collect-garbage --delete-old
 ```
 
 This removes unused packages from the system.
+<br>
+
+To add/remove packages or modify your configuration,
+edit the `/etc/nixos/configuration.nix` file.
