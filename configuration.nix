@@ -111,6 +111,7 @@ in
   home-manager.users.user = { config, pkgs, ... }: {
     home.stateVersion = "23.11"; # The state version is required and should stay at the version you originally installed.
     home.packages = [ pkgs.atool pkgs.httpie ];
+    programs.home-manager.enable = true; # # Let Home Manager install and manage itself.
     home.shellAliases = {
       ls="ls -AF --color=auto";
       recent="ls -ltch";
@@ -299,6 +300,8 @@ in
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.defaultUserShell = pkgs.zsh;
+  programs.zsh.enable = true;
   users.users.user = {
     isNormalUser = true;
     description = "FYP-23-S4-10";
@@ -422,6 +425,8 @@ in
     black
     shellcheck
     shfmt
+    # Shell
+    zsh
   ];
 
   # Enable experimental features.
